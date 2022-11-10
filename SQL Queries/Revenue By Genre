@@ -1,0 +1,11 @@
+Here is a SQL query to identify top revenue by movie genre:
+
+SELECT  E.name,
+        SUM(amount) AS total_amount_paid
+FROM payment A
+LEFT JOIN rental B ON A.rental_id = B.rental_id
+LEFT JOIN inventory C ON B.inventory_id = C.inventory_id
+LEFT JOIN film_category D ON C.film_id = D.film_id
+LEFT JOIN category E ON D.category_id = E.category_ID
+GROUP BY E.name
+ORDER BY total_amount_paid DESC
