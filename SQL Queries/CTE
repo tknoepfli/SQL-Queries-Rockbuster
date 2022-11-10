@@ -1,0 +1,31 @@
+Here is a SQL query with a common table expression:
+
+WITH top_customers_cte (customer_id, first_name, last_name, city, country, amount_paid) AS
+(SELECT C.customer_id,
+        C.first_name,
+        C.last_name,
+        E.city,
+        F.country,
+        Sum(A.amount) AS amount_paid
+   FROM payment A
+        INNER JOIN rental B ON A.rental_id = B.rental_id
+        INNER JOIN customer C ON B.customer_id = C.customer_id
+        INNER JOIN city E ON city_id = E.city_id
+        INNER JOIN country F ON E.country_id = F.country_id
+  WHERE city IN ('Aurora', 'Tokat', 'Tarsus', 'Atlixco', 'Emeishan', 'Pontianak', 'Shimoga', 'Aparecide de Goinia', 'Zalantun', Taguig')
+  GROUP BY  C.customer_id,
+            C.first_name,
+            E.city,
+            F.country
+  ORDER BY amount_paid DESC
+  LIMIT 5)
+SELECT A.country,
+       Count(DISTINCT D.customer_id) AS all_customer_count,
+       Count(DISTINCT E.customer_id) AS top_customer_count
+FROM   country A
+       INNER JOIN city B ON A.country_id = B.country_id
+       INNER JOIN address C ON B.city_id = C.city_id
+       INNER JOIN top_customers_cte E ON D.customer_id = E.customer_id
+       LEFT JOIN top_customers_cte E ON D.customer_id = E.customer_id
+GROUP BY A.country
+ORDER BY all_customer_count DESC, top_customer_count
