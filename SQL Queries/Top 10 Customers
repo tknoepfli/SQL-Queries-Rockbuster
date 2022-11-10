@@ -1,0 +1,14 @@
+Here is an SQL query using INNER JOIN to identify the company's top 10 customers:
+
+SELECT  C.first_name,
+        C.last_name,
+        F.country,
+        SUM(amount) AS amount_paid
+        FROM payment A
+INNER JOIN rental B ON A.rental_id = B.rental_id
+INNER JOIN customer C ON B.customer_id = C.customer_id
+INNER JOIN city E ON D.city_id = E.city_id
+INNER JOIN country F ON E.country_id = F.country_id
+GROUP BY first_name, last_name, country
+ORDER BY amount_paid DESC
+LIMIT 10
