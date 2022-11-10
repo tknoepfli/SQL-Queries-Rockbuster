@@ -1,0 +1,15 @@
+Here is a SQL query to identify the company's most popular movies by amount paid and times rented:
+
+SELECT  F.title,
+        F.rating,
+        E.name,
+        COUNT(B.rental_id) AS times_rented,
+        SUM(amount) AS total_amount_paid
+FROM payment A
+LEFT JOIN rental B ON A.rental_id =B.rental_id
+LEFT JOIN inventory C ON B.inventory_id = C.inventory_id
+LEFT JOIN film_category D ON C.film_id = D.film_id
+LEFT JOIN category E ON D.category_id = E.category_id
+LEFT JOIN film F ON C.film_id = F.film_id
+GROUP BY F.title, E.name, F.rating
+ORDER BY total_amount_paid DESC, times_rented
