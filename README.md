@@ -1,5 +1,3 @@
-SQL readme
-
 Rockbuster Analysis
 ===================
 
